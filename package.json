@@ -1,6 +1,6 @@
 {
-    "name": "uuid64",
-    "version": "0.1.4",
+    "name": "uuid64ts",
+    "version": "0.1.5",
     "description": "UUID v4 (random) Typescript/Javascript package with a custom base 64 encoding added.",
     "scripts": {
         "start": "rimraf dist/**/* && tsc --watch",
