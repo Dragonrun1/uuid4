@@ -28,6 +28,20 @@ console.log('uuid:');
 console.log(uuid);
 ```
 
+## Why make this project?
+
+If this project was just another UUID v4 (random) library there would be
+little point as there are already several fine ones out there for Typescript and
+Javascript, but where they just do UUIDs this project targets being used with
+databases as a primary key. To really understand the fuller background without
+me having to reproduce it all here I'll just direct you to the PHP project that
+inspired this one to be created:
+
+[uuid64type](https://github.com/Dragonrun1/uuid64type)
+
+There you will find a few paragraphs on why I started it and why I think a base
+64 encoded UUID v4 has many benefits.
+
 ## Contributing
 
 Please note that this project is released with a
