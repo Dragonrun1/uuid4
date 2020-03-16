@@ -1,15 +1,30 @@
 {
     "name": "uuid4",
-    "version": "0.1.0",
-    "description": "",
+    "version": "0.1.1",
+    "description": "UUID v4 (random) Typescript/Javascript package with a custom base 64 encoding added.",
     "scripts": {
         "start": "rimraf dist/**/* && tsc --watch",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "keywords": [],
+    "keywords": [
+        "UUID",
+        "UUIDv4",
+        "base64",
+        "typescript",
+        "javascript",
+        "random",
+        "custom encoding"
+    ],
     "author": {
         "email": "dragonrun1@gmail.com",
         "name": "Michael Cummings"
     },
-    "license": "BSD-3-Clause"
+    "license": "BSD-3-Clause",
+    "devDependencies": {
+        "@types/node": "^12.12.6",
+        "mocha": "^7.1.0",
+        "rimraf": "^3.0.2",
+        "tslib": "^1.11.1",
+        "typescript": "^3.8.0"
+    }
 }
