@@ -1,25 +1,31 @@
-# person_ts_skeleton
+# uuid4
 
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
-Skeleton for common person and other related typescript models (classes, interfaces, types etc.) that someone else might
-find useful. The library is attended to work with the related person_db_skeleton
-PHP library but can be used independently.
+UUID v4 (random) Typescript/Javascript package with a custom base 64 encoding added.
 
 ## Installation
 
-Use the package manager [npm](https://www.npmjs.com/) to install person_ts_skeleton.
+Use the package manager [npm](https://www.npmjs.com/) to install uuid4.
 
 ```bash
-npm i person_ts_skeleton
+npm i uuid4
 ```
 
 ## Usage
 
 ```typescript
-import {Person} from 'person_ts_skeleton';
+import {Uuid4} from './Uuid4';
 
-const person = new Person('Jane', 'Doe');
+const base64 = Uuid4.asBase64();
+const hex = Uuid4.asHexString();
+const uuid = Uuid4.asUuid();
+console.log('base64:');
+console.log(base64);
+console.log('hex:');
+console.log(hex);
+console.log('uuid:');
+console.log(uuid);
 ```
 
 ## Contributing
