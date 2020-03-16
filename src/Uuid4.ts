@@ -194,6 +194,9 @@ export class Uuid4 {
         const hexString = data.replace(/-/g, '');
         return Uuid4.fromHexStringToBase64(hexString);
     }
+    public get [Symbol.toStringTag]() {
+        return 'Uuid4';
+    }
     /**
      * Helper method for the common parts of creating new UUID encoded as a binary string.
      *
