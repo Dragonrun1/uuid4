@@ -1,6 +1,6 @@
 {
     "name": "uuid64ts",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "UUID v4 (random) Typescript/Javascript package with a custom base 64 encoding added.",
     "scripts": {
         "clear-test": "rimraf test/**/*.js test/**/*.map test/**/*.d.ts",
