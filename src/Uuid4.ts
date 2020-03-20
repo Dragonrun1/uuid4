@@ -169,7 +169,6 @@ export class Uuid4 {
      */
     public static fromHexStringToUuid(data: string): string {
         if (32 !== data.length) {
-            console.log(data);
             const mess = `Expected hex string length of 32 characters but was given length: ${data.length}`;
             throw new RangeError(mess);
         }
@@ -193,6 +192,17 @@ export class Uuid4 {
     public static fromUuidToBase64(data: string): string {
         const hexString = data.replace(/-/g, '');
         return Uuid4.fromHexStringToBase64(hexString);
+    }
+    /**
+     * Convert from a standard UUID to a hexadecimal encoded UUID.
+     *
+     * NOTE: This method does not verify input is valid UUID.
+     *
+     * @param {string} data The standard UUID.
+     * @returns {string} Returns a hexadecimal encoded UUID.
+     */
+    public static fromUuidToHexString(data: string): string {
+        return data.replace(/-/g, '');
     }
     public get [Symbol.toStringTag]() {
         return 'Uuid4';
@@ -230,6 +240,7 @@ export class Uuid4 {
             let crypto = require('crypto');
             return Uint8Array.from(crypto.randomBytes(16));
         }
+        // `result` is modified in place.
         let result = new Uint8Array(16);
         window.crypto.getRandomValues(result);
         return result;
@@ -237,7 +248,7 @@ export class Uuid4 {
     /**
      * Used in mapping from binary to base 64 during encoding.
      *
-     * @type {{[key: string]: string}}
+     * @type {object}
      * @private
      */
     protected static _base64: { [key: string]: string } = {
