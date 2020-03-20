@@ -8,6 +8,7 @@
         "isolatedModules": true,
         "module": "commonjs",
         "moduleResolution": "node",
+        "newLine": "lf",
         "outDir": "dist",
         "rootDir": "src",
         "sourceMap": true,
@@ -16,6 +17,7 @@
     },
     "exclude": [
         "node_modules",
-        "dist"
+        "dist",
+        "test"
     ]
 }
