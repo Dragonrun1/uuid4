@@ -1,28 +1,11 @@
 {
     "name": "uuid64ts",
-    "version": "1.1.8",
     "description": "UUID v4 (random) Typescript/Javascript package with a custom base 64 encoding added.",
-    "scripts": {
-        "clear-test": "rimraf test/**/*.js test/**/*.map test/**/*.d.ts",
-        "coverage": "npm run clear-test && nyc --reporter=text mocha -r ts-node/register test/**/*.spec.ts",
-        "coverage-html": "npm run clear-test && nyc --reporter=html mocha -r ts-node/register test/**/*.spec.ts",
-        "start": "rimraf dist/**/* && tsc --watch",
-        "test": "npm run clear-test && mocha -b -r ts-node/register test/**/*.spec.ts"
-    },
-    "keywords": [
-        "UUID",
-        "UUIDv4",
-        "base64",
-        "typescript",
-        "javascript",
-        "random",
-        "custom encoding"
-    ],
+    "version": "1.1.8",
     "author": {
-        "email": "dragonrun1@gmail.com",
-        "name": "Michael Cummings"
+        "name": "Michael Cummings",
+        "email": "dragonrun1@gmail.com"
     },
-    "license": "BSD-3-Clause",
     "devDependencies": {
         "@types/chai": "^4.2.11",
         "@types/mocha": "^7.0.2",
@@ -34,5 +17,24 @@
         "ts-node": "^8.6.2",
         "tslib": "^1.11.1",
         "typescript": "^3.8.0"
+    },
+    "keywords": [
+        "UUID",
+        "UUIDv4",
+        "base64",
+        "custom encoding",
+        "javascript",
+        "random",
+        "typescript"
+    ],
+    "license": "BSD-3-Clause",
+    "repository": "https://github.com/Dragonrun1/uuid64ts.git",
+    "scripts": {
+        "uuid4:clear-test": "rimraf test/**/*.js test/**/*.map test/**/*.d.ts",
+        "uuid4:clover": "npm run uuid4:clear-test && nyc --reporter=clover mocha -r ts-node/register test/**/*.spec.ts",
+        "uuid4:coverage": "npm run uuid4:clear-test && nyc --reporter=text mocha -r ts-node/register test/**/*.spec.ts",
+        "uuid4:html": "npm run uuid4:clear-test && nyc --reporter=html mocha -r ts-node/register test/**/*.spec.ts",
+        "start": "rimraf dist/**/* && tsc --watch",
+        "test": "npm run uuid4:clear-test && mocha -b -r ts-node/register test/**/*.spec.ts"
     }
 }
