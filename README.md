@@ -42,6 +42,12 @@ inspired this one to be created:
 There you will find a few paragraphs on why I started it and why I think a base
 64 encoded UUID v4 has many benefits.
 
+## Related Projects
+
+[https://github.com/Dragonrun1/uuid64type](https://github.com/Dragonrun1/uuid64type)
+The project that this project was made to be a translation of but ended up
+causing a large re-write which became __uuid64type__'s version 2.0.
+
 ## Contributing
 
 Please note that this project is released with a
