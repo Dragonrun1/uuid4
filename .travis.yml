@@ -22,5 +22,4 @@ script:
     - npm test
 after_success:
     - npm install coveralls --save-dev
-    #    - npm install mocha-lcov-reporter --save-dev
     - npm run "uuid4:text-lcov"
