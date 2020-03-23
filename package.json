@@ -34,6 +34,7 @@
         "uuid4:clover": "npm run uuid4:clear-test && nyc --reporter=clover mocha -r ts-node/register test/**/*.spec.ts",
         "uuid4:coverage": "npm run uuid4:clear-test && nyc --reporter=text mocha -r ts-node/register test/**/*.spec.ts",
         "uuid4:html": "npm run uuid4:clear-test && nyc --reporter=html mocha -r ts-node/register test/**/*.spec.ts",
+        "uuid4:text-lcov": "npm run uuid4:clear-test && nyc --reporter=text-lcov mocha -r ts-node/register test/**/*.spec.ts | coveralls",
         "start": "rimraf dist/**/* && tsc --watch",
         "test": "npm run uuid4:clear-test && mocha -b -r ts-node/register test/**/*.spec.ts"
     }
