@@ -32,11 +32,11 @@
     "repository": "https://github.com/Dragonrun1/uuid64ts.git",
     "scripts": {
         "uuid4:clear-test": "rimraf test/**/*.js test/**/*.map test/**/*.d.ts",
-        "uuid4:clover": "npm run uuid4:clear-test && nyc --reporter=clover mocha -r ts-node/register test/**/*.spec.ts",
-        "uuid4:coverage": "npm run uuid4:clear-test && nyc --reporter=text mocha -r ts-node/register test/**/*.spec.ts",
-        "uuid4:html": "npm run uuid4:clear-test && nyc --reporter=html mocha -r ts-node/register test/**/*.spec.ts",
-        "uuid4:text-lcov": "nyc --reporter=text-lcov mocha -r ts-node/register test/**/*.spec.ts | coveralls -v",
+        "uuid4:clover": "npm run uuid4:clear-test && nyc --reporter=clover mocha",
+        "uuid4:coverage": "npm run uuid4:clear-test && nyc --reporter=text mocha",
+        "uuid4:html": "npm run uuid4:clear-test && nyc --reporter=html mocha",
+        "uuid4:text-lcov": "nyc --reporter=text-lcov mocha | coveralls",
         "start": "rimraf dist/**/* && tsc --watch",
-        "test": "npm run uuid4:clear-test && mocha -b -r ts-node/register test/**/*.spec.ts"
+        "test": "npm run uuid4:clear-test && mocha -R spec"
     }
 }
