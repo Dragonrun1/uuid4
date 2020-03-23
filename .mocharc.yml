@@ -1,0 +1,8 @@
+bail: true
+color: true
+recursive: true
+reporter: dot
+require:
+    - "ts-node/register"
+sort: true
+spec: "test/**/*.spec.ts"
