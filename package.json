@@ -1,5 +1,5 @@
 {
-    "name": "uuid64ts",
+    "name": "@dragonrun1/uuid64ts",
     "description": "UUID v4 (random) Typescript/Javascript package with a custom base 64 encoding added.",
     "version": "1.1.9",
     "author": {
@@ -28,6 +28,9 @@
         "typescript"
     ],
     "license": "BSD-3-Clause",
+    "publishConfig": {
+        "access": "public"
+    },
     "readme": "https://github.com/Dragonrun1/uuid64ts#README",
     "repository": "https://github.com/Dragonrun1/uuid64ts.git",
     "scripts": {
