@@ -11,8 +11,8 @@ install:
     - npm i --no-fund
 node_js:
     - "12.13"
-    - "12.14.1"
-    - "12.16.1"
+    - "12.14"
+    - "lts/*"
     - "node"
 matrix:
     allow_failures:
