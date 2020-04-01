@@ -22,5 +22,5 @@ script:
     - mkdir -p coverage
     - npm test
 after_success:
-    - npm install coveralls --save-dev
+    - npm i coveralls --save-dev --no-fund
     - npm run "uuid4:text-lcov"
