@@ -11,11 +11,12 @@ install:
     - npm i --no-fund
 node_js:
     - "12.13"
+    - "12.14.1"
     - "12.16.1"
-    - "13.11.0"
+    - "node"
 matrix:
     allow_failures:
-        -   node_js: "13.11.0"
+        -   node_js: "node"
     fast_finish: true
 script:
     - mkdir -p coverage
