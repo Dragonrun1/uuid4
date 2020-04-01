@@ -5,7 +5,7 @@ deploy:
     api_key:
         secure: xHyLoJ1EZ66tBUhRuahgAT6FITEZ5j+WuJ3M3CEpa6FwW+VTzjIfcWOJih8KBxTgmLhQdOqhsEfqC5fQ6EI87K8QottRLD3MPc+EuX+pfMYhstJ0QdXiMZCRI+mZM4vl9BWy7J8gF2Me1YAv6KynSFEjBqgkB5wJXSqQqlNmKgCnTXfVgUenYTUWKb5kqdWABDIQVwCU/dZ9Lpie0E/CMg5CEF6ZgY+R71/HttKTzi3DQN6vJi2xeyBJEvDSYjtdSpmJ6XcLvmqgxywAxuK+eJ4MrlWjHfDfjn3jSKgTmyQqZ7pc6eeKfg+gw3omZetBwK+LFBwpYr9bcaHz1LiDjvr/ZLABDRnDOvTwwPY8mtS0/3ShkNX1SeiVqIXB6c1ot1EfQpUB9CBZ2PY3urJ6HPoCSjvSU8zB4eC7SDF/JmkV8N1uoOOHKJiqYSiZy64cr3W3gdjwcfxOIemT6PQgpHEkouSvu0IW9KN45z7LgGGPrjnXui34+q2DWXtZSm5fDuK4OB80Ubwg02USOaOmsz/5t0qAMhN3KT4NeeSHacHU3pt48wnmeZ4nXFZFcIlnqRVPf0grlg4LM9HCK3ofzeizzX0FjzsZi10yvhXIjg1v44CfGxqffNQ6qLzYLAo9RdJbpimRZOqNs16ZtgVLY7adPe4bb567q7wLVt3DKQM=
     on:
-        node_js: "lts"
+        node_js: "lts/*"
         tags: true
 install:
     - npm i --no-fund
