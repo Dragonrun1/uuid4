@@ -11,7 +11,7 @@ UUID v4 (random) Typescript/Javascript package with a custom base 64 encoding ad
 Use the package manager [npm](https://www.npmjs.com/) to install uuid4.
 
 ```bash
-npm i uuid4
+npm i @dragonrun1/uuid64ts
 ```
 
 ## Usage
