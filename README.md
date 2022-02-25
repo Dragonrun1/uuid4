@@ -17,13 +17,17 @@ npm i @dragonrun1/uuid64ts
 ## Usage
 
 ```typescript
-import {Uuid4} from './Uuid4';
+import {Uuid4} from 'Uuid4';
 
-const base64 = Uuid4.asBase64();
-const hex = Uuid4.asHexString();
-const uuid = Uuid4.asUuid();
+const MyUuid4 = new Uuid4();
+const base64 = MyUuid4.asBase64();
+const bin = MyUuid4.asBinString();
+const hex = MyUuid4.asHexString();
+const uuid = MyUuid4.asUuid();
 console.log('base64:');
 console.log(base64);
+console.log('bin:');
+console.log(bin);
 console.log('hex:');
 console.log(hex);
 console.log('uuid:');
@@ -62,9 +66,10 @@ discuss what you would like to change.
 Please make sure to update or add tests as appropriate.
 
 ## License
+
 [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause.html)
 
-Copyright (c) 2020 Michael Cummings. All rights reserved.
+Copyright © 2020-2022 Michael Cummings. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:

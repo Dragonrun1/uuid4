@@ -1,31 +1,37 @@
 {
     "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
+        "allowJs": false,
+        "allowSyntheticDefaultImports": false,
         "declaration": true,
-        "experimentalDecorators": true,
+        "esModuleInterop": false,
+        "forceConsistentCasingInFileNames": true,
         "importHelpers": true,
         "incremental": false,
-        "isolatedModules": true,
-        "module": "commonjs",
+        "isolatedModules": false,
+        "lib": [
+            "DOM",
+            "ES6",
+            "ES2017",
+            "ES2017.Object",
+            "ES2017.TypedArrays"
+        ],
+        "module": "CommonJS",
         "moduleResolution": "node",
         "newLine": "lf",
-        "noEmitOnError": true,
-        "noErrorTruncation": true,
-        "rootDir": "../",
-        "removeComments": true,
-        "sourceMap": false,
+        "outDir": "../tests/",
+        "skipLibCheck": false,
+        "sourceMap": true,
         "strict": true,
-        "suppressImplicitAnyIndexErrors": false,
-        "target": "ES2018",
-        "outDir": "."
+        "target": "ES2017"
     },
     "exclude": [
-        "node_modules",
         "dist",
+        "node_modules",
+        "test",
         "src"
     ],
     "include": [
-        "../src/**/*",
+        "./src/**/*",
         "**/*"
     ]
 }

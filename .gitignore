@@ -6,11 +6,12 @@ coverage/
 dist/
 node_modules/
 out/
+tests/
 
 package-lock.json
 tsconfig.tsbuildinfo
-test*.*
-junk*.*
+test.ts
+examples/browser/junk.html
 
 # Logs
 logs

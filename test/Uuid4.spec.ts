@@ -1,333 +1,591 @@
 import {expect} from 'chai';
 import 'mocha';
-import {Uuid4} from '../src/Uuid4';
+import {RandomSourceFunction, Uuid4, Uuid4DecodingError, Uuid4InvalidUuidError, Uuid4RangeError} from '../src/Uuid4';
 
-type arrayString = [number[], string];
-type stringString = [string, string];
-type stringNumber = [string, number];
+type MockData = {
+    base64: string,
+    bin: string,
+    hex: string,
+    uint?: Uint8Array,
+    uuid: string,
+};
 describe(
-    'Uuid4 class',
+    'Uuid4 encode tests',
     () => {
+        const mockData: MockData[] = [
+            {
+                base64: 'AAAAAAAABAAIAAAAAAAAAA',
+                bin: '00000000000000000000000000000000000000000000000001000000000000001000000000000000000000000000000000000000000000000000000000000000',
+                hex: '00000000000040008000000000000000',
+                uint: new Uint8Array([
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                         0x00,
+                                     ]),
+                uuid: '00000000-0000-4000-8000-000000000000',
+            },
+            {
+                base64: 'D_______9P_7__________',
+                bin: '11111111111111111111111111111111111111111111111101001111111111111011111111111111111111111111111111111111111111111111111111111111',
+                hex: 'ffffffffffff4fffbfffffffffffffff',
+                uint: new Uint8Array([
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                         0xff,
+                                     ]),
+                uuid: 'ffffffff-ffff-4fff-bfff-ffffffffffff',
+            },
+            {
+                base64: 'APDw8PDw9PD48PDw8PDw8P',
+                bin: '00001111000011110000111100001111000011110000111101001111000011111000111100001111000011110000111100001111000011110000111100001111',
+                hex: '0f0f0f0f0f0f4f0f8f0f0f0f0f0f0f0f',
+                uint: new Uint8Array([
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                         0x0f,
+                                     ]),
+                uuid: '0f0f0f0f-0f0f-4f0f-8f0f-0f0f0f0f0f0f',
+            },
+            {
+                base64: 'Dw8PDw8PBA8LDw8PDw8PDw',
+                bin: '11110000111100001111000011110000111100001111000001000000111100001011000011110000111100001111000011110000111100001111000011110000',
+                hex: 'f0f0f0f0f0f040f0b0f0f0f0f0f0f0f0',
+                uint: new Uint8Array([
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                         0xf0,
+                                     ]),
+                uuid: 'f0f0f0f0-f0f0-40f0-b0f0-f0f0f0f0f0f0',
+            },
+            {
+                base64: 'CgoKCgoKBAoKCgoKCgoKCg',
+                bin: '10100000101000001010000010100000101000001010000001000000101000001010000010100000101000001010000010100000101000001010000010100000',
+                hex: 'a0a0a0a0a0a040a0a0a0a0a0a0a0a0a0',
+                uint: new Uint8Array([
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                         0xa0,
+                                     ]),
+                uuid: 'a0a0a0a0-a0a0-40a0-a0a0-a0a0a0a0a0a0',
+            },
+            {
+                base64: 'AKCgoKCgpKCooKCgoKCgoK',
+                bin: '00001010000010100000101000001010000010100000101001001010000010101000101000001010000010100000101000001010000010100000101000001010',
+                hex: '0a0a0a0a0a0a4a0a8a0a0a0a0a0a0a0a',
+                uint: new Uint8Array([
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                         0x0a,
+                                     ]),
+                uuid: '0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a',
+            },
+        ];
+        it('should correctly encode base64', () => {
+            for (const {base64: expected, uint: inp} of mockData) {
+                const pump = ((_: number) => inp) as RandomSourceFunction;
+                const sut = (new Uuid4(pump)).asBase64();
+                expect(sut).to.be.a(typeof expected)
+                           .and.to.have.lengthOf(expected.length)
+                           .and.to.equal(expected);
+            }
+            for (let i = 0; i < 5; i++) {
+                const sut = (new Uuid4()).asBase64();
+                expect(sut).to.be.a('string')
+                           .and.to.have.lengthOf(22);
+            }
+        });
+        it('should correctly encode binary', () => {
+            for (const {bin: expected, uint: inp} of mockData) {
+                const pump = ((_: number) => inp) as RandomSourceFunction;
+                const sut = (new Uuid4(pump)).asBinString();
+                expect(sut).to.be.a(typeof expected)
+                           .and.to.have.lengthOf(expected.length)
+                           .and.to.equal(expected);
+            }
+            for (let i = 0; i < 5; i++) {
+                const sut = (new Uuid4()).asBinString();
+                expect(sut).to.be.a('string')
+                           .and.to.have.lengthOf(128);
+            }
+        });
+        it('should correctly encode hexadecimal', () => {
+            for (const {hex: expected, uint: inp} of mockData) {
+                const pump = ((_: number) => inp) as RandomSourceFunction;
+                const sut = (new Uuid4(pump)).asHexString();
+                expect(sut).to.be.a(typeof expected)
+                           .and.to.have.lengthOf(expected.length)
+                           .and.to.equal(expected);
+            }
+            for (let i = 0; i < 5; i++) {
+                const sut = (new Uuid4()).asHexString();
+                expect(sut).to.be.a('string')
+                           .and.to.have.lengthOf(32);
+            }
+        });
+        it('should correctly encode uuid', () => {
+            for (const {uuid: expected, uint: inp} of mockData) {
+                const pump = ((_: number) => inp) as RandomSourceFunction;
+                const sut = (new Uuid4(pump)).asUuid();
+                expect(sut).to.be.a(typeof expected)
+                           .and.to.have.lengthOf(expected.length)
+                           .and.to.equal(expected);
+            }
+            for (let i = 0; i < 5; i++) {
+                const sut = (new Uuid4()).asUuid();
+                expect(sut).to.be.a('string')
+                           .and.to.have.lengthOf(36);
+            }
+        });
+    },
+);
+// noinspection DuplicatedCode
+describe(
+    'Uuid4 conversion tests',
+    () => {
+        let mock: InstanceType<typeof Uuid4>;
+        const mockData: MockData[] = [
+            {
+                base64: 'AAAAAAAABAAIAAAAAAAAAA',
+                bin: '00000000000000000000000000000000000000000000000001000000000000001000000000000000000000000000000000000000000000000000000000000000',
+                hex: '00000000000040008000000000000000',
+                uuid: '00000000-0000-4000-8000-000000000000',
+            },
+            {
+                base64: 'D_______9P_7__________',
+                bin: '11111111111111111111111111111111111111111111111101001111111111111011111111111111111111111111111111111111111111111111111111111111',
+                hex: 'ffffffffffff4fffbfffffffffffffff',
+                uuid: 'ffffffff-ffff-4fff-bfff-ffffffffffff',
+            },
+            {
+                base64: 'APDw8PDw9PD48PDw8PDw8P',
+                bin: '00001111000011110000111100001111000011110000111101001111000011111000111100001111000011110000111100001111000011110000111100001111',
+                hex: '0f0f0f0f0f0f4f0f8f0f0f0f0f0f0f0f',
+                uuid: '0f0f0f0f-0f0f-4f0f-8f0f-0f0f0f0f0f0f',
+            },
+            {
+                base64: 'Dw8PDw8PBA8LDw8PDw8PDw',
+                bin: '11110000111100001111000011110000111100001111000001000000111100001011000011110000111100001111000011110000111100001111000011110000',
+                hex: 'f0f0f0f0f0f040f0b0f0f0f0f0f0f0f0',
+                uuid: 'f0f0f0f0-f0f0-40f0-b0f0-f0f0f0f0f0f0',
+            },
+            {
+                base64: 'CgoKCgoKBAoKCgoKCgoKCg',
+                bin: '10100000101000001010000010100000101000001010000001000000101000001010000010100000101000001010000010100000101000001010000010100000',
+                hex: 'a0a0a0a0a0a040a0a0a0a0a0a0a0a0a0',
+                uuid: 'a0a0a0a0-a0a0-40a0-a0a0-a0a0a0a0a0a0',
+            },
+            {
+                base64: 'AKCgoKCgpKCooKCgoKCgoK',
+                bin: '00001010000010100000101000001010000010100000101001001010000010101000101000001010000010100000101000001010000010100000101000001010',
+                hex: '0a0a0a0a0a0a4a0a8a0a0a0a0a0a0a0a',
+                uuid: '0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a',
+            },
+        ];
+        beforeEach(() => {
+            mock = new Uuid4();
+        });
+        it('should convert from base64 to binary', () => {
+            for (const {base64: inp, bin: expected} of mockData) {
+                mock.fromBase64(inp);
+                const sut = mock.asBinString();
+                expect(sut).to.be.a(typeof expected)
+                           .and.to.have.lengthOf(expected.length)
+                           .and.to.equal(expected);
+            }
+        });
         it('should convert from base64 to hexadecimal', () => {
-            let data: stringString[] = [
-                ['AAYmNkZWZHaKlqMDEyMzQ1', '0062636465664768a96a303132333435'],
-                ['BhYmNkZWZHaKlqMDEyMzQ1', '6162636465664768a96a303132333435'],
-                ['AAAGNkZWZHaKlqMDEyMzQ1', '0000636465664768a96a303132333435'],
-                ['D_YmNkZWZHaKlqMDEyMzQ1', 'ff62636465664768a96a303132333435'],
-                ['BhYmNkZWZHaKlqMDEyMzT_', '6162636465664768a96a3031323334ff'],
-                ['D__2NkZWZHaKlqMDEyMzQ1', 'ffff636465664768a96a303132333435'],
-            ];
-            for (const [input, expected] of data) {
-                let sut = Uuid4.fromBase64ToHexString(input);
+            for (const {base64: inp, hex: expected} of mockData) {
+                mock.fromBase64(inp);
+                const sut = mock.asHexString();
                 expect(sut).to.be.a(typeof expected)
                            .and.to.have.lengthOf(expected.length)
                            .and.to.equal(expected);
             }
         });
         it('should convert from base64 to uuid', () => {
-            let data: stringString[] = [
-                ['AAYmNkZWZHaKlqMDEyMzQ1', '00626364-6566-4768-a96a-303132333435'],
-                ['BhYmNkZWZHaKlqMDEyMzQ1', '61626364-6566-4768-a96a-303132333435'],
-                ['AAAGNkZWZHaKlqMDEyMzQ1', '00006364-6566-4768-a96a-303132333435'],
-                ['D_YmNkZWZHaKlqMDEyMzQ1', 'ff626364-6566-4768-a96a-303132333435'],
-                ['BhYmNkZWZHaKlqMDEyMzT_', '61626364-6566-4768-a96a-3031323334ff'],
-                ['D__2NkZWZHaKlqMDEyMzQ1', 'ffff6364-6566-4768-a96a-303132333435'],
-            ];
-            for (const [input, expected] of data) {
-                let sut = Uuid4.fromBase64ToUuid(input);
+            for (const {base64: inp, uuid: expected} of mockData) {
+                mock.fromBase64(inp);
+                const sut = mock.asUuid();
+                expect(sut).to.be.a(typeof expected)
+                           .and.to.have.lengthOf(expected.length)
+                           .and.to.equal(expected);
+            }
+        });
+        it('should convert from binary to base64', () => {
+            for (const {bin: inp, base64: expected} of mockData) {
+                mock.fromBinString(inp);
+                const sut = mock.asBase64();
+                expect(sut).to.be.a(typeof expected)
+                           .and.to.have.lengthOf(expected.length)
+                           .and.to.equal(expected);
+            }
+        });
+        it('should convert from binary to hexadecimal', () => {
+            for (const {bin: inp, hex: expected} of mockData) {
+                mock.fromBinString(inp);
+                const sut = mock.asHexString();
+                expect(sut).to.be.a(typeof expected)
+                           .and.to.have.lengthOf(expected.length)
+                           .and.to.equal(expected);
+            }
+        });
+        it('should convert from binary to uuid', () => {
+            for (const {bin: inp, uuid: expected} of mockData) {
+                mock.fromBinString(inp);
+                const sut = mock.asUuid();
                 expect(sut).to.be.a(typeof expected)
                            .and.to.have.lengthOf(expected.length)
                            .and.to.equal(expected);
             }
         });
         it('should convert from hexadecimal to base64', () => {
-            let data: stringString[] = [
-                ['0062636465664768a96a303132333435', 'AAYmNkZWZHaKlqMDEyMzQ1'],
-                ['6162636465664768a96a303132333435', 'BhYmNkZWZHaKlqMDEyMzQ1'],
-                ['0000636465664768a96a303132333435', 'AAAGNkZWZHaKlqMDEyMzQ1'],
-                ['ff62636465664768a96a303132333435', 'D_YmNkZWZHaKlqMDEyMzQ1'],
-                ['6162636465664768a96a3031323334ff', 'BhYmNkZWZHaKlqMDEyMzT_'],
-                ['ffff636465664768a96a303132333435', 'D__2NkZWZHaKlqMDEyMzQ1'],
-            ];
-            for (const [input, expected] of data) {
-                let sut = Uuid4.fromHexStringToBase64(input);
+            for (const {hex: inp, base64: expected} of mockData) {
+                mock.fromHexString(inp);
+                const sut = mock.asBase64();
+                expect(sut).to.be.a(typeof expected)
+                           .and.to.have.lengthOf(expected.length)
+                           .and.to.equal(expected);
+            }
+        });
+        it('should convert from hexadecimal to binary', () => {
+            for (const {hex: inp, bin: expected} of mockData) {
+                mock.fromHexString(inp);
+                const sut = mock.asBinString();
                 expect(sut).to.be.a(typeof expected)
                            .and.to.have.lengthOf(expected.length)
                            .and.to.equal(expected);
             }
         });
         it('should convert from hexadecimal to uuid', () => {
-            let data: stringString[] = [
-                ['0062636465664768a96a303132333435', '00626364-6566-4768-a96a-303132333435'],
-                ['6162636465664768a96a303132333435', '61626364-6566-4768-a96a-303132333435'],
-                ['0000636465664768a96a303132333435', '00006364-6566-4768-a96a-303132333435'],
-                ['ff62636465664768a96a303132333435', 'ff626364-6566-4768-a96a-303132333435'],
-                ['6162636465664768a96a3031323334ff', '61626364-6566-4768-a96a-3031323334ff'],
-                ['ffff636465664768a96a303132333435', 'ffff6364-6566-4768-a96a-303132333435'],
-            ];
-            for (const [input, expected] of data) {
-                let sut = Uuid4.fromHexStringToUuid(input);
+            for (const {hex: inp, uuid: expected} of mockData) {
+                mock.fromHexString(inp);
+                const sut = mock.asUuid();
                 expect(sut).to.be.a(typeof expected)
                            .and.to.have.lengthOf(expected.length)
                            .and.to.equal(expected);
             }
         });
         it('should convert from uuid to base64', () => {
-            let data: stringString[] = [
-                ['00626364-6566-4768-a96a-303132333435', 'AAYmNkZWZHaKlqMDEyMzQ1'],
-                ['61626364-6566-4768-a96a-303132333435', 'BhYmNkZWZHaKlqMDEyMzQ1'],
-                ['00006364-6566-4768-a96a-303132333435', 'AAAGNkZWZHaKlqMDEyMzQ1'],
-                ['ff626364-6566-4768-a96a-303132333435', 'D_YmNkZWZHaKlqMDEyMzQ1'],
-                ['61626364-6566-4768-a96a-3031323334ff', 'BhYmNkZWZHaKlqMDEyMzT_'],
-                ['ffff6364-6566-4768-a96a-303132333435', 'D__2NkZWZHaKlqMDEyMzQ1'],
-            ];
-            for (const [input, expected] of data) {
-                let sut = Uuid4.fromUuidToBase64(input);
+            for (const {uuid: inp, base64: expected} of mockData) {
+                mock.fromUuid4(inp);
+                const sut = mock.asBase64();
+                expect(sut).to.be.a(typeof expected)
+                           .and.to.have.lengthOf(expected.length)
+                           .and.to.equal(expected);
+            }
+        });
+        it('should convert from uuid to binary', () => {
+            for (const {uuid: inp, bin: expected} of mockData) {
+                mock.fromUuid4(inp);
+                const sut = mock.asBinString();
                 expect(sut).to.be.a(typeof expected)
                            .and.to.have.lengthOf(expected.length)
                            .and.to.equal(expected);
             }
         });
         it('should convert from uuid to hexadecimal', () => {
-            let data: stringString[] = [
-                ['00626364-6566-4768-a96a-303132333435', '0062636465664768a96a303132333435'],
-                ['61626364-6566-4768-a96a-303132333435', '6162636465664768a96a303132333435'],
-                ['00006364-6566-4768-a96a-303132333435', '0000636465664768a96a303132333435'],
-                ['ff626364-6566-4768-a96a-303132333435', 'ff62636465664768a96a303132333435'],
-                ['61626364-6566-4768-a96a-3031323334ff', '6162636465664768a96a3031323334ff'],
-                ['ffff6364-6566-4768-a96a-303132333435', 'ffff636465664768a96a303132333435'],
-            ];
-            for (const [input, expected] of data) {
-                let sut = Uuid4.fromUuidToHexString(input);
+            for (const {uuid: inp, hex: expected} of mockData) {
+                mock.fromUuid4(inp);
+                const sut = mock.asHexString();
                 expect(sut).to.be.a(typeof expected)
                            .and.to.have.lengthOf(expected.length)
                            .and.to.equal(expected);
             }
         });
-        it('should correctly base64 encode input', () => {
-            let data = new Uint8Array([97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53]);
-            let expected = 'BhYmNkZWZHaKlqMDEyMzQ1';
-            let sut = Uuid4.asBase64(data);
-            expect(sut).to.be.a(typeof expected)
-                       .and.to.have.lengthOf(expected.length)
-                       .and.to.equal(expected);
-            sut = Uuid4.asBase64();
-            expect(sut).to.be.a('string')
-                       .and.to.have.lengthOf(22);
+    },
+);
+// noinspection DuplicatedCode
+describe(
+    'Uuid4 error tests',
+    () => {
+        let mock: InstanceType<typeof Uuid4>;
+        const mockData: MockData[] = [
+            {
+                base64: 'AAAAAAAABAAIAAAAAAAAAA',
+                bin: '00000000000000000000000000000000000000000000000001000000000000001000000000000000000000000000000000000000000000000000000000000000',
+                hex: '00000000000040008000000000000000',
+                uuid: '00000000-0000-4000-8000-000000000000',
+            },
+            {
+                base64: 'D_______9P_7__________',
+                bin: '11111111111111111111111111111111111111111111111101001111111111111011111111111111111111111111111111111111111111111111111111111111',
+                hex: 'ffffffffffff4fffbfffffffffffffff',
+                uuid: 'ffffffff-ffff-4fff-bfff-ffffffffffff',
+            },
+            {
+                base64: 'APDw8PDw9PD48PDw8PDw8P',
+                bin: '00001111000011110000111100001111000011110000111101001111000011111000111100001111000011110000111100001111000011110000111100001111',
+                hex: '0f0f0f0f0f0f4f0f8f0f0f0f0f0f0f0f',
+                uuid: '0f0f0f0f-0f0f-4f0f-8f0f-0f0f0f0f0f0f',
+            },
+            {
+                base64: 'Dw8PDw8PBA8LDw8PDw8PDw',
+                bin: '11110000111100001111000011110000111100001111000001000000111100001011000011110000111100001111000011110000111100001111000011110000',
+                hex: 'f0f0f0f0f0f040f0b0f0f0f0f0f0f0f0',
+                uuid: 'f0f0f0f0-f0f0-40f0-b0f0-f0f0f0f0f0f0',
+            },
+            {
+                base64: 'CgoKCgoKBAoKCgoKCgoKCg',
+                bin: '10100000101000001010000010100000101000001010000001000000101000001010000010100000101000001010000010100000101000001010000010100000',
+                hex: 'a0a0a0a0a0a040a0a0a0a0a0a0a0a0a0',
+                uuid: 'a0a0a0a0-a0a0-40a0-a0a0-a0a0a0a0a0a0',
+            },
+            {
+                base64: 'AKCgoKCgpKCooKCgoKCgoK',
+                bin: '00001010000010100000101000001010000010100000101001001010000010101000101000001010000010100000101000001010000010100000101000001010',
+                hex: '0a0a0a0a0a0a4a0a8a0a0a0a0a0a0a0a',
+                uuid: '0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a',
+            },
+        ];
+        beforeEach(() => {
+            mock = new Uuid4();
         });
-        it('should correctly base64 encode 0 inputs', () => {
-            let data: arrayString[] = [
-                [
-                    [0, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53],
-                    'AAYmNkZWZHaKlqMDEyMzQ1',
-                ],
-                [
-                    [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 0],
-                    'BhYmNkZWZHaKlqMDEyMzQA',
-                ],
-                [
-                    [0, 0, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53],
-                    'AAAGNkZWZHaKlqMDEyMzQ1',
-                ],
-            ];
-            for (const [input, expected] of data) {
-                let sut = Uuid4.asBase64(new Uint8Array(input));
-                expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+        it('should throw range error for incorrect size input given to fromBase64', () => {
+            const deltas = [20, 21, 23, 24];
+            for (const delta of deltas) {
+                for (const {base64: src} of mockData) {
+                    const inp = (src.substring(0, 20)).padEnd(delta, '0');
+                    const mess = `'inp' must be 22 characters long, but was '${delta}' long instead`;
+                    expect(() => mock.fromBase64(inp))
+                        .to.throw(Uuid4RangeError, mess);
+                }
             }
         });
-        it('should correctly base64 encode 255 inputs', () => {
-            let data: arrayString[] = [
-                [
-                    [255, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53],
-                    'D_YmNkZWZHaKlqMDEyMzQ1',
-                ],
-                [
-                    [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 255],
-                    'BhYmNkZWZHaKlqMDEyMzT_',
-                ],
-                [
-                    [255, 255, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53],
-                    'D__2NkZWZHaKlqMDEyMzQ1',
-                ],
-            ];
-            for (const [input, expected] of data) {
-                let sut = Uuid4.asBase64(new Uint8Array(input));
-                expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+        it('should throw range error for incorrect size input given to fromBinString', () => {
+            const deltas = [126, 127, 129, 130];
+            for (const delta of deltas) {
+                for (const {bin: src} of mockData) {
+                    const inp = (src.substring(0, 126)).padEnd(delta, '0');
+                    const mess = `'inp' must be 128 characters long, but was '${delta}' long instead`;
+                    expect(() => mock.fromBinString(inp))
+                        .to.throw(Uuid4RangeError, mess);
+                }
             }
         });
-        it('should correctly encode uuid', () => {
-            let data = new Uint8Array([97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53]);
-            let expected = '61626364-6566-4768-a96a-303132333435';
-            let sut = Uuid4.asUuid(data);
-            expect(sut).to.be.a(typeof expected)
-                       .and.to.have.lengthOf(expected.length)
-                       .and.to.equal(expected);
-            sut = Uuid4.asUuid();
-            expect(sut).to.be.a('string')
-                       .and.to.have.lengthOf(36);
-        });
-        it('should correctly encode 0 inputs', () => {
-            let data: arrayString[] = [
-                [
-                    [0, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53],
-                    '00626364-6566-4768-a96a-303132333435',
-                ],
-                [
-                    [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 0],
-                    '61626364-6566-4768-a96a-303132333400',
-                ],
-                [
-                    [0, 0, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53],
-                    '00006364-6566-4768-a96a-303132333435',
-                ],
-            ];
-            for (const [input, expected] of data) {
-                let sut = Uuid4.asUuid(new Uint8Array(input));
-                expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+        it('should throw range error for incorrect size input given to fromHexString', () => {
+            const deltas = [30, 31, 33, 34];
+            for (const delta of deltas) {
+                for (const {hex: src} of mockData) {
+                    const inp = (src.substring(0, 30)).padEnd(delta, '0');
+                    const mess = `'inp' must be 32 characters long, but was '${delta}' long instead`;
+                    expect(() => mock.fromHexString(inp))
+                        .to.throw(Uuid4RangeError, mess);
+                }
             }
         });
-        it('should correctly encode 255 inputs', () => {
-            let data: arrayString[] = [
-                [
-                    [255, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53],
-                    'ff626364-6566-4768-a96a-303132333435',
-                ],
-                [
-                    [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 255],
-                    '61626364-6566-4768-a96a-3031323334ff',
-                ],
-                [
-                    [255, 255, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53],
-                    'ffff6364-6566-4768-a96a-303132333435',
-                ],
-            ];
-            for (const [input, expected] of data) {
-                let sut = Uuid4.asUuid(new Uint8Array(input));
-                expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+        it('should throw range error for incorrect size input given to fromUuid4', () => {
+            const deltas = [34, 35, 37, 39];
+            for (const delta of deltas) {
+                for (const {hex: src} of mockData) {
+                    const inp = (src.substring(0, 34)).padEnd(delta, '0');
+                    const mess = `'inp' must be 36 characters long, but was '${delta}' long instead`;
+                    expect(() => mock.fromUuid4(inp))
+                        .to.throw(Uuid4RangeError, mess);
+                }
             }
         });
-        it('should correctly hexadecimal encode input', () => {
-            let data = new Uint8Array([97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53]);
-            let expected = '6162636465664768a96a303132333435';
-            let sut = Uuid4.asHexString(data);
-            expect(sut).to.be.a(typeof expected)
-                       .and.to.have.lengthOf(expected.length)
-                       .and.to.equal(expected);
-            sut = Uuid4.asHexString();
-            expect(sut).to.be.a('string')
-                       .and.to.have.lengthOf(32);
-        });
-        it('should correctly hexadecimal encode 0 inputs', () => {
-            let data: arrayString[] = [
-                [
-                    [0, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53],
-                    '0062636465664768a96a303132333435',
-                ],
-                [
-                    [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 0],
-                    '6162636465664768a96a303132333400',
-                ],
-                [
-                    [0, 0, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53],
-                    '0000636465664768a96a303132333435',
-                ],
-            ];
-            for (const [input, expected] of data) {
-                let sut = Uuid4.asHexString(new Uint8Array(input));
-                expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+        it('should throw decoding error for invalid input given to fromBase64', () => {
+            const message = '\'inp\' is not a base64 UUID as it contains invalid characters';
+            const deltas = ['^', '@', '#', '$'];
+            for (const delta of deltas) {
+                for (const {base64: src} of mockData) {
+                    const inp = delta + src.substring(1);
+                    expect(() => mock.fromBase64(inp))
+                        .to.throw(Uuid4DecodingError, message);
+                }
             }
         });
-        it('should correctly hexadecimal encode 255 inputs', () => {
-            let data: arrayString[] = [
-                [
-                    [255, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53],
-                    'ff62636465664768a96a303132333435',
-                ],
-                [
-                    [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 255],
-                    '6162636465664768a96a3031323334ff',
-                ],
-                [
-                    [255, 255, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53],
-                    'ffff636465664768a96a303132333435',
-                ],
-            ];
-            for (const [input, expected] of data) {
-                let sut = Uuid4.asHexString(new Uint8Array(input));
-                expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+        it('should throw decoding error for invalid input given to fromBinString', () => {
+            const message = '\'inp\' is not a binary UUID as it contains something other than \'1\'s and \'0\'s';
+            const deltas = ['^', '@', '#', '$'];
+            for (const delta of deltas) {
+                for (const {bin: src} of mockData) {
+                    const inp = delta + src.substring(1);
+                    expect(() => mock.fromBinString(inp))
+                        .to.throw(Uuid4DecodingError, message);
+                }
             }
         });
-        it('should have an object name of Uuid4', () => {
-            return expect(Object.prototype.toString.call(new Uuid4())).to.equal('[object Uuid4]');
-        });
-        it('should throw range error for incorrect convert base64 to hexadecimal input', () => {
-            let data: stringNumber[] = [
-                ['AAYmNkZWZHaKlqMDEyMzQ', 21],
-                ['BhYmNkZWZHaKlqMDEyMzQ11', 23],
-                ['AAAGNkZWZHaKlqMDEyMz', 20],
-                ['D_YmNkZWZHaKlqMDEyMzQ111', 24],
-            ];
-            for (const [input, len] of data) {
-                let mess = `Expected base 64 number length of 22 characters but was given length: ${len}`;
-                expect(() => Uuid4.fromBase64ToHexString(input))
-                    .to.throw(RangeError, mess);
+        it('should throw decoding error for invalid input given to fromHexString', () => {
+            const message = '\'inp\' is not a hexadecimal UUID as it contains invalid characters';
+            const deltas = ['^', '@', '#', '$'];
+            for (const delta of deltas) {
+                for (const {hex: src} of mockData) {
+                    const inp = delta + src.substring(1);
+                    expect(() => mock.fromHexString(inp))
+                        .to.throw(Uuid4DecodingError, message);
+                }
             }
         });
-        it('should throw range error for incorrect convert hexadecimal to base64 input', () => {
-            let data: stringNumber[] = [
-                ['0062636465664768a96a30313233343', 31],
-                ['6162636465664768a96a3031323334353', 33],
-                ['0000636465664768a96a3031323334', 30],
-                ['ff62636465664768a96a30313233343535', 34],
-            ];
-            for (const [input, len] of data) {
-                let mess = `Expected hex string length of 32 characters but was given length: ${len}`;
-                expect(() => Uuid4.fromHexStringToBase64(input))
-                    .to.throw(RangeError, mess);
+        it('should throw decoding error for invalid input given to fromUuid4', () => {
+            const message = '\'inp\' is not a standard UUID as it contains invalid characters';
+            const deltas = ['^', '@', '#', '$'];
+            for (const delta of deltas) {
+                for (const {uuid: src} of mockData) {
+                    const inp = delta + src.substring(1);
+                    expect(() => mock.fromUuid4(inp))
+                        .to.throw(Uuid4DecodingError, message);
+                }
+            }
+            const message2 = '\'inp\' is not a standard UUID as it is missing \'-\'s or they are misplaced';
+            const deltas2 = [8, 13, 18, 23];
+            for (const delta of deltas2) {
+                for (const {uuid: src} of mockData) {
+                    const inp = src.substring(0, delta) + '#' + src.substring(delta + 1);
+                    expect(() => mock.fromUuid4(inp))
+                        .to.throw(Uuid4DecodingError, message2);
+                }
             }
         });
-        it('should throw range error for incorrect convert hexadecimal to uuid input', () => {
-            let data: stringNumber[] = [
-                ['0062636465664768a96a30313233343', 31],
-                ['6162636465664768a96a3031323334353', 33],
-                ['0000636465664768a96a3031323334', 30],
-                ['ff62636465664768a96a30313233343535', 34],
-            ];
-            for (const [input, len] of data) {
-                let mess = `Expected hex string length of 32 characters but was given length: ${len}`;
-                expect(() => Uuid4.fromHexStringToUuid(input))
-                    .to.throw(RangeError, mess);
+        it('should throw invalid error for non-v4 uuid input given to fromBase64 when validating', () => {
+            const message = '\'inp\' is not a valid v4 (random) UUID';
+            let deltas = ['CP', 'DP', 'EP', 'B_'];
+            for (const delta of deltas) {
+                for (const {base64: src} of mockData) {
+                    const inp = src.substring(0, 8) + delta + src.substring(10);
+                    expect(() => mock.fromBase64(inp, true))
+                        .to.throw(Uuid4InvalidUuidError, message);
+                }
+            }
+            deltas = ['A', 'Q', 'w'];
+            for (const delta of deltas) {
+                for (const {base64: src} of mockData) {
+                    const inp = src.substring(0, 11) + delta + src.substring(12);
+                    expect(() => mock.fromBase64(inp, true))
+                        .to.throw(Uuid4InvalidUuidError, message);
+                }
             }
         });
-        it('should throw range error for long input', () => {
-            let data = new Uint8Array([96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53]);
-            expect(() => Uuid4.asBase64(data))
-                .to.throw(RangeError, 'Expected data array length of 16 but was given length: 17');
-            expect(() => Uuid4.asHexString(data))
-                .to.throw(RangeError, 'Expected data array length of 16 but was given length: 17');
-            expect(() => Uuid4.asUuid(data))
-                .to.throw(RangeError, 'Expected data array length of 16 but was given length: 17');
+        it('should throw invalid error for non-v4 uuid input given to fromBinString when validating', () => {
+            const message = '\'inp\' is not a valid v4 (random) UUID';
+            const deltas = [48, 50, 51, 65];
+            for (const delta of deltas) {
+                for (const {bin: src} of mockData) {
+                    const inp = src.substring(0, delta) + '1' + src.substring(delta + 1);
+                    expect(() => mock.fromBinString(inp, true))
+                        .to.throw(Uuid4InvalidUuidError, message);
+                }
+            }
         });
-        it('should throw range error for short input', () => {
-            let data = new Uint8Array([98, 99, 100, 101, 102, 103, 104, 105, 106, 48, 49, 50, 51, 52, 53]);
-            expect(() => Uuid4.asBase64(data))
-                .to.throw(RangeError, 'Expected data array length of 16 but was given length: 15');
-            expect(() => Uuid4.asHexString(data))
-                .to.throw(RangeError, 'Expected data array length of 16 but was given length: 15');
-            expect(() => Uuid4.asUuid(data))
-                .to.throw(RangeError, 'Expected data array length of 16 but was given length: 15');
+        it('should throw invalid error for non-v4 uuid input given to fromHexString when validating', () => {
+            const message = '\'inp\' is not a valid v4 (random) UUID';
+            // 1100 1000 0110 0101
+            let deltas = ['c', '8', '6', '5'];
+            for (const delta of deltas) {
+                for (const {hex: src} of mockData) {
+                    const inp = src.substring(0, 12) + delta + src.substring(13);
+                    expect(() => mock.fromHexString(inp, true))
+                        .to.throw(Uuid4InvalidUuidError, message);
+                }
+            }
+            // 1100 0100 0000
+            deltas = ['c', '4', '0'];
+            for (const delta of deltas) {
+                for (const {hex: src} of mockData) {
+                    const inp = src.substring(0, 16) + delta + src.substring(17);
+                    expect(() => mock.fromHexString(inp, true))
+                        .to.throw(Uuid4InvalidUuidError, message);
+                }
+            }
         });
-    }
+        it('should throw invalid error for non-v4 uuid input given to fromUuid4 when validating', () => {
+            const message = '\'inp\' is not a valid v4 (random) UUID';
+            // 1100 1000 0110 0101
+            let deltas = ['c', '8', '6', '5'];
+            for (const delta of deltas) {
+                for (const {uuid: src} of mockData) {
+                    const inp = src.substring(0, 14) + delta + src.substring(15);
+                    expect(() => mock.fromUuid4(inp, true))
+                        .to.throw(Uuid4InvalidUuidError, message);
+                }
+            }
+            // 1100 0100 0000
+            deltas = ['c', '4', '0'];
+            for (const delta of deltas) {
+                for (const {uuid: src} of mockData) {
+                    const inp = src.substring(0, 19) + delta + src.substring(20);
+                    expect(() => mock.fromUuid4(inp, true))
+                        .to.throw(Uuid4InvalidUuidError, message);
+                }
+            }
+        });
+    },
 );
