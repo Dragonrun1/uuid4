@@ -47,7 +47,7 @@
         "uuid4:clover": "npm run uuid4:clear-coverage && nyc --reporter=clover mocha",
         "uuid4:coverage": "npm run uuid4:clear-coverage && nyc --reporter=text mocha",
         "uuid4:html": "npm run uuid4:clear-coverage && nyc --reporter=html mocha",
-        "uuid4:lcov": "npm run uuid4:clear-coverage && nyc --reporter=text-lcov mocha",
+        "uuid4:lcov": "npm run uuid4:clear-coverage && nyc --reporter=lcov mocha --reporter=dot",
         "uuid4:text-lcov": "nyc --reporter=text-lcov mocha | coveralls",
         "start": "rimraf dist/**/* && tsc --watch",
         "test": "mocha",
@@ -55,6 +55,7 @@
         "example:node:from": "node ./examples/node/from.js",
         "example:node:source": "node ./examples/node/source.js",
         "example:deno:as": "deno run --no-check ./examples/deno/as.ts",
-        "example:deno:source": "deno run --no-check ./examples/deno/source.ts"
+        "example:deno:source": "deno run --no-check ./examples/deno/source.ts",
+        "junk": "mocha --help"
     }
 }

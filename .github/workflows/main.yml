@@ -28,15 +28,21 @@ jobs:
                 cache: 'npm'
             - run: npm ci
             - run: npm run build --if-present
-            - run: npm test
-            - run: npm run uuid4:text-lcov
-
-    coveralls:
-       needs: test
-       runs-on: ubuntu-latest
-       if: ${{ needs.test.result == 'success' }}
-       steps:
-            - name: "Coveralls"
+            # - run: npm test
+            - run: npm run uuid4:lcov
+            - name: "Coveralls GitHub Action"
+              if: matrix.node-version == '16.x'
               uses: coverallsapp/github-action@master
               with:
                 github-token: ${{ secrets.github_token }}
+
+    # coveralls:
+    #    needs: test
+    #    runs-on: ubuntu-latest
+    #    if: ${{ needs.test.result == 'success' }}
+    #    steps:
+    #         - name: "Coveralls GitHub Action"
+    #           if: matrix.node-version == '16.x'
+    #           uses: coverallsapp/github-action@master
+    #           with:
+    #             github-token: ${{ secrets.github_token }}
