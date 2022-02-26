@@ -1,7 +1,4 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: Node.js CI
+name: Main
 
 on:
     push:
@@ -12,12 +9,14 @@ on:
 jobs:
     test:
 
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.os }}
 
         strategy:
+            fail-fast: false
             matrix:
                 node-version: [14.x, 16.x]
                 # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+                os: [macos-latest, ubuntu-18.04, ubuntu-20.04, windows-2019, windows-2022]
 
         steps:
             - uses: actions/checkout@v2
@@ -28,21 +27,10 @@ jobs:
                 cache: 'npm'
             - run: npm ci
             - run: npm run build --if-present
-            # - run: npm test
+            - name: Mocha Tests with coverage
             - run: npm run uuid4:lcov
-            - name: "Coveralls GitHub Action"
-              if: matrix.node-version == '16.x'
+            - name: Coveralls GitHub Action
+              if: matrix.os == 'ubuntu-20.04' && matrix.node-version == '16.x'
               uses: coverallsapp/github-action@master
               with:
                 github-token: ${{ secrets.github_token }}
-
-    # coveralls:
-    #    needs: test
-    #    runs-on: ubuntu-latest
-    #    if: ${{ needs.test.result == 'success' }}
-    #    steps:
-    #         - name: "Coveralls GitHub Action"
-    #           if: matrix.node-version == '16.x'
-    #           uses: coverallsapp/github-action@master
-    #           with:
-    #             github-token: ${{ secrets.github_token }}
