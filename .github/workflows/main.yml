@@ -28,7 +28,7 @@ jobs:
             - run: npm ci
             - run: npm run build --if-present
             - name: Mocha Tests with coverage
-            - run: npm run uuid4:lcov
+              run: npm run uuid4:lcov
             - name: Coveralls GitHub Action
               if: matrix.os == 'ubuntu-20.04' && matrix.node-version == '16.x'
               uses: coverallsapp/github-action@master
