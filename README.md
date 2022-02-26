@@ -1,9 +1,10 @@
 # uuid4
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
-[![CI](https://github.com/Dragonrun1/uuid64ts/actions/workflows/main.yml/badge.svg)](https://github.com/Dragonrun1/uuid64ts/actions/workflows/main.yml)
+[![Main](https://github.com/Dragonrun1/uuid64ts/actions/workflows/main.yml/badge.svg)](https://github.com/Dragonrun1/uuid64ts/actions/workflows/main.yml)
 [![Coverage Status](https://coveralls.io/repos/github/Dragonrun1/uuid64ts/badge.svg?branch=main)](https://coveralls.io/github/Dragonrun1/uuid64ts?branch=main)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/Dragonrun1/uuid64ts)
+[![npm (scoped)](https://img.shields.io/npm/v/@dragonrun1/uuid64ts?color=%234848a0)](https://www.npmjs.com/package/@dragonrun1/uuid64ts)
 
 UUID v4 (random) Typescript/Javascript package with a custom base 64 encoding added.
 

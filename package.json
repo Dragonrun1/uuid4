@@ -1,7 +1,7 @@
 {
     "name": "@dragonrun1/uuid64ts",
     "description": "UUID v4 (random) Typescript/Javascript package with a custom base 64 encoding added.",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "author": {
         "name": "Michael Cummings",
         "email": "dragonrun1@gmail.com"
