@@ -533,12 +533,18 @@ export interface Uuid4From {
 }
 
 export type RandomSourceFunction = typeof randomPump;
-export const isBrowser = typeof window !== 'undefined' &&
+export const isBrowser =
+    typeof window !== 'undefined' &&
     typeof window.document !== 'undefined';
-export const isNode = typeof process !== 'undefined' &&
+export const isNode =
+    // @ts-ignore
+    typeof process !== 'undefined' &&
+    // @ts-ignore
     process.versions != null &&
+    // @ts-ignore
     process.versions.node != null;
-export const isWebWorker = typeof self === 'object' &&
+export const isWebWorker =
+    typeof self === 'object' &&
     self.constructor &&
     self.constructor.name === 'DedicatedWorkerGlobalScope';
 export const isDeno =
