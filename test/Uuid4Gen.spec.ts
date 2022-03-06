@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import 'mocha';
-import {Uuid4RangeError, Uuid4Gen, Uuid4TypeError} from '../src/Uuid4';
+import {Uuid4Gen} from '../src/Uuid4Gen';
+import {Uuid4RangeError, Uuid4TypeError} from '../src/errors';
 
 type MockData = {
     base64: string,
@@ -68,37 +69,37 @@ describe(
             for (const {base64: expected} of mockData) {
                 const sut = mock.asBase64();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should correctly encode binary', () => {
             for (const {bin: expected} of mockData) {
                 const sut = mock.asBinString();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should correctly encode hexadecimal', () => {
             for (const {hex: expected} of mockData) {
                 const sut = mock.asHexString();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
             for (let i = 0; i < 5; i++) {
                 const sut = (new Uuid4Gen()).asHexString();
                 expect(sut).to.be.a('string')
-                           .and.to.have.lengthOf(32);
+                    .and.to.have.lengthOf(32);
             }
         });
         it('should correctly encode uuid', () => {
             for (const {uuid: expected} of mockData) {
                 const sut = mock.asUuid();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
     },

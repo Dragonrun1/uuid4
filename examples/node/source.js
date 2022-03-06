@@ -1,4 +1,4 @@
-const {Uuid4Gen} = require('../../dist/Uuid4');
+import { Uuid4Gen } from '../../dist/mod.js';
 const MyUuid4 = new Uuid4Gen();
 // noinspection DuplicatedCode
 for (let i = 0; i < 8; i++) {

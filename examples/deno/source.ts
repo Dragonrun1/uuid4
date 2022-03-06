@@ -1,5 +1,5 @@
 // @ts-ignore
-import {Uuid4Gen} from '../../src/Uuid4.ts';
+import {Uuid4Gen} from '../../deno_dist/mod.ts';
 const MyUuid4 = new Uuid4Gen();
 // noinspection DuplicatedCode
 for (let i = 0; i < 8; i++) {

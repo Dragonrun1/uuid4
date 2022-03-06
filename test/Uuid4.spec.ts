@@ -1,6 +1,8 @@
 import {expect} from 'chai';
 import 'mocha';
-import {RandomSourceFunction, Uuid4, Uuid4DecodingError, Uuid4InvalidUuidError, Uuid4RangeError} from '../src/Uuid4';
+import {Uuid4} from '../src/Uuid4.js';
+import {Uuid4DecodingError, Uuid4InvalidUuidError, Uuid4RangeError} from '../src/errors.js';
+import {RandomSourceFunction} from '../src/types.js';
 
 type MockData = {
     base64: string,
@@ -18,23 +20,23 @@ describe(
                 bin: '00000000000000000000000000000000000000000000000001000000000000001000000000000000000000000000000000000000000000000000000000000000',
                 hex: '00000000000040008000000000000000',
                 uint: new Uint8Array([
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                         0x00,
-                                     ]),
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                    0x00,
+                ]),
                 uuid: '00000000-0000-4000-8000-000000000000',
             },
             {
@@ -42,23 +44,23 @@ describe(
                 bin: '11111111111111111111111111111111111111111111111101001111111111111011111111111111111111111111111111111111111111111111111111111111',
                 hex: 'ffffffffffff4fffbfffffffffffffff',
                 uint: new Uint8Array([
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                         0xff,
-                                     ]),
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                    0xff,
+                ]),
                 uuid: 'ffffffff-ffff-4fff-bfff-ffffffffffff',
             },
             {
@@ -66,23 +68,23 @@ describe(
                 bin: '00001111000011110000111100001111000011110000111101001111000011111000111100001111000011110000111100001111000011110000111100001111',
                 hex: '0f0f0f0f0f0f4f0f8f0f0f0f0f0f0f0f',
                 uint: new Uint8Array([
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                         0x0f,
-                                     ]),
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                    0x0f,
+                ]),
                 uuid: '0f0f0f0f-0f0f-4f0f-8f0f-0f0f0f0f0f0f',
             },
             {
@@ -90,23 +92,23 @@ describe(
                 bin: '11110000111100001111000011110000111100001111000001000000111100001011000011110000111100001111000011110000111100001111000011110000',
                 hex: 'f0f0f0f0f0f040f0b0f0f0f0f0f0f0f0',
                 uint: new Uint8Array([
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                         0xf0,
-                                     ]),
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                    0xf0,
+                ]),
                 uuid: 'f0f0f0f0-f0f0-40f0-b0f0-f0f0f0f0f0f0',
             },
             {
@@ -114,23 +116,23 @@ describe(
                 bin: '10100000101000001010000010100000101000001010000001000000101000001010000010100000101000001010000010100000101000001010000010100000',
                 hex: 'a0a0a0a0a0a040a0a0a0a0a0a0a0a0a0',
                 uint: new Uint8Array([
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                         0xa0,
-                                     ]),
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                    0xa0,
+                ]),
                 uuid: 'a0a0a0a0-a0a0-40a0-a0a0-a0a0a0a0a0a0',
             },
             {
@@ -138,23 +140,23 @@ describe(
                 bin: '00001010000010100000101000001010000010100000101001001010000010101000101000001010000010100000101000001010000010100000101000001010',
                 hex: '0a0a0a0a0a0a4a0a8a0a0a0a0a0a0a0a',
                 uint: new Uint8Array([
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                         0x0a,
-                                     ]),
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                    0x0a,
+                ]),
                 uuid: '0a0a0a0a-0a0a-4a0a-8a0a-0a0a0a0a0a0a',
             },
         ];
@@ -163,13 +165,13 @@ describe(
                 const pump = ((_: number) => inp) as RandomSourceFunction;
                 const sut = (new Uuid4(pump)).asBase64();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
             for (let i = 0; i < 5; i++) {
                 const sut = (new Uuid4()).asBase64();
                 expect(sut).to.be.a('string')
-                           .and.to.have.lengthOf(22);
+                    .and.to.have.lengthOf(22);
             }
         });
         it('should correctly encode binary', () => {
@@ -177,13 +179,13 @@ describe(
                 const pump = ((_: number) => inp) as RandomSourceFunction;
                 const sut = (new Uuid4(pump)).asBinString();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
             for (let i = 0; i < 5; i++) {
                 const sut = (new Uuid4()).asBinString();
                 expect(sut).to.be.a('string')
-                           .and.to.have.lengthOf(128);
+                    .and.to.have.lengthOf(128);
             }
         });
         it('should correctly encode hexadecimal', () => {
@@ -191,13 +193,13 @@ describe(
                 const pump = ((_: number) => inp) as RandomSourceFunction;
                 const sut = (new Uuid4(pump)).asHexString();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
             for (let i = 0; i < 5; i++) {
                 const sut = (new Uuid4()).asHexString();
                 expect(sut).to.be.a('string')
-                           .and.to.have.lengthOf(32);
+                    .and.to.have.lengthOf(32);
             }
         });
         it('should correctly encode uuid', () => {
@@ -205,13 +207,13 @@ describe(
                 const pump = ((_: number) => inp) as RandomSourceFunction;
                 const sut = (new Uuid4(pump)).asUuid();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
             for (let i = 0; i < 5; i++) {
                 const sut = (new Uuid4()).asUuid();
                 expect(sut).to.be.a('string')
-                           .and.to.have.lengthOf(36);
+                    .and.to.have.lengthOf(36);
             }
         });
     },
@@ -267,8 +269,8 @@ describe(
                 mock.fromBase64(inp);
                 const sut = mock.asBinString();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should convert from base64 to hexadecimal', () => {
@@ -276,8 +278,8 @@ describe(
                 mock.fromBase64(inp);
                 const sut = mock.asHexString();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should convert from base64 to uuid', () => {
@@ -285,8 +287,8 @@ describe(
                 mock.fromBase64(inp);
                 const sut = mock.asUuid();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should convert from binary to base64', () => {
@@ -294,8 +296,8 @@ describe(
                 mock.fromBinString(inp);
                 const sut = mock.asBase64();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should convert from binary to hexadecimal', () => {
@@ -303,8 +305,8 @@ describe(
                 mock.fromBinString(inp);
                 const sut = mock.asHexString();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should convert from binary to uuid', () => {
@@ -312,8 +314,8 @@ describe(
                 mock.fromBinString(inp);
                 const sut = mock.asUuid();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should convert from hexadecimal to base64', () => {
@@ -321,8 +323,8 @@ describe(
                 mock.fromHexString(inp);
                 const sut = mock.asBase64();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should convert from hexadecimal to binary', () => {
@@ -330,8 +332,8 @@ describe(
                 mock.fromHexString(inp);
                 const sut = mock.asBinString();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should convert from hexadecimal to uuid', () => {
@@ -339,8 +341,8 @@ describe(
                 mock.fromHexString(inp);
                 const sut = mock.asUuid();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should convert from uuid to base64', () => {
@@ -348,8 +350,8 @@ describe(
                 mock.fromUuid4(inp);
                 const sut = mock.asBase64();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should convert from uuid to binary', () => {
@@ -357,8 +359,8 @@ describe(
                 mock.fromUuid4(inp);
                 const sut = mock.asBinString();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
         it('should convert from uuid to hexadecimal', () => {
@@ -366,8 +368,8 @@ describe(
                 mock.fromUuid4(inp);
                 const sut = mock.asHexString();
                 expect(sut).to.be.a(typeof expected)
-                           .and.to.have.lengthOf(expected.length)
-                           .and.to.equal(expected);
+                    .and.to.have.lengthOf(expected.length)
+                    .and.to.equal(expected);
             }
         });
     },

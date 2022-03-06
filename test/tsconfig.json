@@ -15,14 +15,14 @@
             "ES2017.Object",
             "ES2017.TypedArrays"
         ],
-        "module": "CommonJS",
+        "module": "ESNext",
         "moduleResolution": "node",
         "newLine": "lf",
         "outDir": "../tests/",
         "skipLibCheck": false,
         "sourceMap": true,
         "strict": true,
-        "target": "ES2017"
+        "target": "ES2020"
     },
     "exclude": [
         "dist",

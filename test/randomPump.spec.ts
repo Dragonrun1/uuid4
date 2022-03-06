@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import 'mocha';
-import {randomPump, Uuid4RangeError, Uuid4TypeError} from '../src/Uuid4';
+import {Uuid4RangeError, Uuid4TypeError} from '../src/errors';
+import {randomPump} from '../src/utils';
 
 describe(
     'randomPump buckets tests',
@@ -10,7 +11,7 @@ describe(
             for (const delta of deltas) {
                 const sut = randomPump(delta);
                 expect(sut).to.be.a('Uint8Array')
-                           .and.to.have.lengthOf(delta * 16);
+                    .and.to.have.lengthOf(delta * 16);
             }
         });
     },

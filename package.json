@@ -11,9 +11,10 @@
         "@types/chai": "^4.3.0",
         "@types/mocha": "^9.1.0",
         "@types/node": "^16.11.26",
+        "c8": "^7.11.0",
         "chai": "^4.3.6",
+        "denoify": "^0.11.0",
         "mocha": "^9.2.1",
-        "nyc": "^15.1.0",
         "rimraf": "^3.0.2",
         "ts-node": "^10.5.0",
         "tslib": "^2.3.1",
@@ -33,25 +34,29 @@
         "typescript"
     ],
     "license": "BSD-3-Clause",
-    "main": "dist/Uuid4.js",
+    "main": "dist/mod.js",
     "publishConfig": {
         "access": "public"
     },
     "readme": "https://github.com/Dragonrun1/uuid64ts#README",
     "repository": "https://github.com/Dragonrun1/uuid64ts.git",
     "scripts": {
-        "uuid4:clear-tests": "rimraf tests/**/*",
-        "uuid4:clear-coverage": "rimraf coverage/**/*",
-        "uuid4:clover": "npm run uuid4:clear-coverage && nyc --reporter=clover mocha",
-        "uuid4:coverage": "npm run uuid4:clear-coverage && nyc --reporter=text mocha",
-        "uuid4:html": "npm run uuid4:clear-coverage && nyc --reporter=html mocha",
-        "uuid4:lcov": "npm run uuid4:clear-coverage && nyc --reporter=lcov mocha --reporter=dot",
-        "start": "rimraf dist/**/* && tsc --watch",
-        "test": "mocha",
+        "build": "npm run uuid4:clear-dist && npm run uuid4:clear-deno_dist && tsc && denoify",
         "example:node:as": "node ./examples/node/as.js",
-        "example:node:from": "node ./examples/node/from.js",
         "example:node:source": "node ./examples/node/source.js",
         "example:deno:as": "deno run --no-check ./examples/deno/as.ts",
-        "example:deno:source": "deno run --no-check ./examples/deno/source.ts"
-    }
+        "example:deno:source": "deno run --no-check ./examples/deno/source.ts",
+        "preinstall": "node ./.config/scripts/symlink-root.js",
+        "start": "rimraf dist/**/* && tsc --watch",
+        "test": "mocha",
+        "uuid4:clear-deno_dist": "rimraf deno_dist/**/*",
+        "uuid4:clear-dist": "rimraf dist/**/*",
+        "uuid4:clear-tests": "rimraf tests/**/*",
+        "uuid4:clear-coverage": "rimraf coverage/**/*",
+        "uuid4:clover": "npm run uuid4:clear-coverage && c8 --reporter=clover mocha",
+        "uuid4:coverage": "npm run uuid4:clear-coverage && c8 --reporter=text mocha",
+        "uuid4:html": "npm run uuid4:clear-coverage && c8 --reporter=html mocha",
+        "uuid4:lcov": "npm run uuid4:clear-coverage && c8 --reporter=lcov mocha --reporter=dot"
+    },
+    "type": "module"
 }
