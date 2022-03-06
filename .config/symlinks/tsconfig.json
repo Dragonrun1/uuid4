@@ -5,9 +5,9 @@
         "declaration": true,
         "esModuleInterop": false,
         "forceConsistentCasingInFileNames": true,
-        "importHelpers": false,
+        "importHelpers": true,
         "incremental": false,
-        "isolatedModules": false,
+        "isolatedModules": true,
         "lib": [
             "DOM",
             "ES6",
@@ -15,17 +15,18 @@
             "ES2017.Object",
             "ES2017.TypedArrays"
         ],
-        "module": "CommonJS",
+        "module": "ESNext",
         "moduleResolution": "node",
         "newLine": "lf",
         "outDir": "./dist/",
         "skipLibCheck": false,
         "sourceMap": true,
         "strict": true,
-        "target": "ES2017"
+        "target": "ES2020"
     },
     "exclude": [
-        "dist",
+        "dist/",
+        "deno_dist/",
         "node_modules",
         "test"
     ],
