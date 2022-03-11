@@ -5,7 +5,8 @@
     "extension": ["cjs", "js", "mjs", "ts"],
     "node-option": [
         "experimental-specifier-resolution=node",
-        "loader=ts-node/esm"
+        "loader=ts-node/esm",
+        "no-warnings"
     ],
     "recursive": true,
     "reporter": "spec",
