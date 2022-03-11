@@ -1,9 +1,11 @@
 /**
  * @script
  *
- * This is left as a JavaScript file since it is called in the `preinstall` hook
- * before any packages have been installed. It only has access to the `node`
- * internals.
+ * This is left as a JavaScript file since it should be called before any
+ * packages have been installed. It only has access to the `node` internals.
+ *
+ * __NOTE:__ on Windows system this script must be run with Administrator
+ * permissions to be able to create the symlinks used.
  *
  * Original idea stolen from script in
  * {@link monots https://github.com/monots/monots}
@@ -92,18 +94,13 @@ const targets = readdirSync(baseDir('.config', 'symlinks'))
 for (const { original, target }
     of targets) {
     const targetStat = getFileStatSync(target);
-    // Nothing to do since the path is linked correctly.
     if (isLinkedTo(target, original)) {
         continue;
     }
-    // The file or directory exists but is not symlinked correctly. It should be
-    // deleted.
     if (targetStat) {
         console.log('deleting path', target);
         deletePath(target);
     }
-    symlinkSync(original, target, 'junction');
+    symlinkSync(original, target);
 }
-console.log(
-    'Successfully symlinked all the misc config files into the root directory.'
-);
+console.log('Successfully symlinked all the misc config files into the root directory.');
