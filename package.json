@@ -1,7 +1,7 @@
 {
     "name": "@dragonrun1/uuid64ts",
     "description": "UUID v4 (random) Typescript/Javascript package with a custom base 64 encoding added.",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "author": {
         "name": "Michael Cummings",
         "email": "dragonrun1@gmail.com"
@@ -14,11 +14,12 @@
         "c8": "^7.11.0",
         "chai": "^4.3.6",
         "denoify": "^0.11.0",
+        "http-server": "^14.1.0",
         "mocha": "^9.2.1",
         "rimraf": "^3.0.2",
         "ts-node": "^10.5.0",
         "tslib": "^2.3.1",
-        "typescript": "^4.5.5"
+        "typescript": "^4.6"
     },
     "funding": {
         "type": "github",
@@ -42,11 +43,13 @@
     "repository": "https://github.com/Dragonrun1/uuid64ts.git",
     "scripts": {
         "build": "npm run uuid4:clear-dist && npm run uuid4:clear-deno_dist && tsc && denoify",
+        "dev:setup": "node ./.config/scripts/symlink-root.js",
+        "example:browser:as": "http-server ./ -p8880 -a 127.0.0.1 -c-1 --cors -o examples/browser/as.html",
+        "example:browser:source": "http-server ./ -p8881 -a 127.0.0.1 -c-1 --cors -o examples/browser/source.html",
         "example:node:as": "node ./examples/node/as.js",
         "example:node:source": "node ./examples/node/source.js",
         "example:deno:as": "deno run --no-check ./examples/deno/as.ts",
         "example:deno:source": "deno run --no-check ./examples/deno/source.ts",
-        "preinstall": "node ./.config/scripts/symlink-root.js",
         "start": "rimraf dist/**/* && tsc --watch",
         "test": "mocha",
         "uuid4:clear-deno_dist": "rimraf deno_dist/**/*",

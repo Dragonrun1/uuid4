@@ -15,7 +15,7 @@
             "ES2017.Object",
             "ES2017.TypedArrays"
         ],
-        "module": "ESNext",
+        "module": "ES2022",
         "moduleResolution": "node",
         "newLine": "lf",
         "outDir": "./dist/",
