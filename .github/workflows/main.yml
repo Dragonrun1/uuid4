@@ -25,8 +25,9 @@ jobs:
               with:
                 node-version: ${{ matrix.node-version }}
                 cache: 'npm'
+            - run: npm run dev:setup
             - run: npm ci
-            - run: npm run build --if-present
+            - run: npm run build
             - name: Mocha Tests with coverage
               run: npm run uuid4:lcov
             - name: Coveralls GitHub Action
